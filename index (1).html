@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Egaaa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #1a1f2e;
+            --bg2:       #222840;
+            --surface:   #ffffff;
+            --env:       #2c3450;
+            --env-dark:  #1e2438;
+            --env-flap:  #3a4260;
+            --ink:       #1a1f2e;
+            --ink-soft:  #64748b;
+            --accent:    #4f7fe8;
+            --accent2:   #6c9cf5;
+            --line:      #e8edf5;
+            --paper:     #f8fafd;
+        }
+
+        body {
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 15% 15%, rgba(79,127,232,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 85%, rgba(79,127,232,0.08) 0%, transparent 55%);
+            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ─── SCREEN: START ─── */
+        #start-screen {
+            text-align: center;
+            animation: fadeUp 0.7s ease forwards;
+        }
+
+        .start-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        .start-title {
+            font-family: 'Lora', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .start-sub {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 36px;
+        }
+
+        .start-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 13px 32px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(79,127,232,0.4);
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        .start-btn:hover {
+            background: var(--accent2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79,127,232,0.5);
+        }
+
+        /* ─── SCREEN: ENVELOPE ─── */
+        #envelope-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .env-hint {
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            transition: opacity 0.4s;
+        }
+
+        .envelope-wrap {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .envelope-wrap:hover { transform: translateY(-4px); }
+
+        .env-body {
+            position: absolute;
+            inset: 0;
+            background: var(--env);
+            border-radius: 4px 4px 6px 6px;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.05),
+                0 16px 48px rgba(0,0,0,0.5);
+        }
+
+        .env-fold-l {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 150px solid var(--env-dark);
+            border-top: 100px solid transparent;
+            z-index: 2;
+        }
+
+        .env-fold-r {
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 0; height: 0;
+            border-right: 150px solid var(--env-dark);
+            border-top: 100px solid transparent;
+            z-index: 2;
+        }
+
+        .env-flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--env-flap);
+            transform-origin: top center;
+            transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+            z-index: 3;
+        }
+
+        .env-stamp {
+            position: absolute;
+            top: 14px; right: 18px;
+            width: 34px; height: 42px;
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            z-index: 4;
+            opacity: 0.45;
+        }
+
+        .env-address {
+            position: absolute;
+            bottom: 26px; left: 24px;
+            z-index: 4;
+        }
+
+        .env-address .to {
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 3px;
+        }
+
+        .env-address .name {
+            font-family: 'Lora', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.65);
+        }
+
+        .env-seal {
+            position: absolute;
+            bottom: -10px; left: 50%;
+            transform: translateX(-50%);
+            width: 28px; height: 28px;
+            background: var(--accent);
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 0 0 3px var(--bg), 0 4px 12px rgba(79,127,232,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            transition: opacity 0.3s;
+        }
+
+        /* Open animation */
+        .envelope-wrap.opening .env-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrap.opening .env-seal { opacity: 0; }
+
+        .envelope-wrap.opening {
+            animation: envOut 0.4s ease 0.6s forwards;
+            pointer-events: none;
+        }
+
+        @keyframes envOut {
+            to { opacity: 0; transform: translateY(8px) scale(0.96); }
+        }
+
+        /* ─── SCREEN: LETTER ─── */
+        #letter-screen {
+            width: 100%;
+            max-width: 480px;
+            padding: 24px 20px 48px;
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .letter-card {
+            background: var(--paper);
+            border-radius: 8px;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.06),
+                0 24px 64px rgba(0,0,0,0.55);
+            overflow: hidden;
+        }
+
+        .letter-topbar {
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+        }
+
+        .letter-content {
+            padding: 28px 28px 32px;
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 27px,
+                var(--line) 27px,
+                var(--line) 28px
+            );
+            background-position: 0 40px;
+        }
+
+        .letter-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 22px;
+        }
+
+        .letter-to-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            margin-bottom: 3px;
+        }
+
+        .letter-to-name {
+            font-family: 'Lora', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .letter-date {
+            font-size: 0.73rem;
+            color: var(--ink-soft);
+            text-align: right;
+            margin-top: 2px;
+        }
+
+        .letter-divider {
+            width: 36px;
+            height: 2px;
+            background: var(--accent);
+            margin-bottom: 20px;
+            border-radius: 2px;
+        }
+
+        .letter-salutation {
+            font-family: 'Lora', serif;
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 14px;
+        }
+
+        .letter-body {
+            font-family: 'Lora', serif;
+            font-size: 0.93rem;
+            line-height: 1.8;
+            color: #2d3748;
+        }
+
+        .letter-body p + p {
+            margin-top: 14px;
+        }
+
+        .letter-sign-wrap {
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+        }
+
+        .letter-sign-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            margin-bottom: 4px;
+        }
+
+        .letter-sign {
+            font-family: 'Lora', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .back-row {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.13);
+            color: rgba(255,255,255,0.4);
+            padding: 9px 22px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.06em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .back-btn:hover {
+            border-color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.65);
+        }
+
+        /* ─── Utils ─── */
+        .hidden { display: none !important; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Screen 1: Start -->
+    <div id="start-screen">
+        <p class="start-eyebrow">Ada pesan untukmu</p>
+        <h1 class="start-title">Buat Egaa</h1>
+        <p class="start-sub">Klik untuk membuka kiriman</p>
+        <button class="start-btn" onclick="goToEnvelope()">Buka →</button>
+    </div>
+
+    <!-- Screen 2: Envelope -->
+    <div id="envelope-screen" class="hidden">
+        <div class="envelope-wrap" id="env-box" onclick="openEnvelope()">
+            <div class="env-body"></div>
+            <div class="env-fold-l"></div>
+            <div class="env-fold-r"></div>
+            <div class="env-flap"></div>
+            <div class="env-stamp">✉</div>
+            <div class="env-address">
+                <div class="to">Kepada</div>
+                <div class="name">Ega Ramadhan</div>
+            </div>
+            <div class="env-seal">✦</div>
+        </div>
+        <p class="env-hint" id="env-hint">Ketuk amplop untuk membuka</p>
+    </div>
+
+    <!-- Screen 3: Letter (scrollable) -->
+    <div id="letter-screen" class="hidden">
+        <div class="letter-card">
+            <div class="letter-topbar"></div>
+            <div class="letter-content">
+                <div class="letter-meta">
+                    <div>
+                        <div class="letter-to-label">Kepada</div>
+                        <div class="letter-to-name">Ega</div>
+                    </div>
+                    <div class="letter-date" id="letter-date"></div>
+                </div>
+                <div class="letter-divider"></div>
+                <p class="letter-salutation">Hey, kamu.</p>
+                <div class="letter-body">
+                    <p>
+                        Haloo bang Egaa, hehe salam kenal ya🤏. Hmmm aku gatau masalah apa yang kamu hadapi sekarang
+                        tapi mungkin sekarang kamu lagi ovt tentang masa depanmu dan omongan orang lain, aku bilang gini karena
+                        aku tau dari sosmed kamu yang ga se ceria biasanya.
+                    </p>
+                    <p>
+                        It`s okay bang Egaa. terkadang ucapan orang tuh nyakitin, tapii kamu jangan ngerasa kalau
+                        mimpi kamu ketinggian ya bang, kamu tuh hebat bangett tauuu, sumpah aku kagum sama kamu,
+                        apalagi aku tau kamu anak UB dan kamu aktif banget di UB, behh aku kagum bgt berharap bisa
+                        kaya bang Ega, aku yakin kamu bisa kok bangg, perjalananmu udah sejauh ini, bahkan kau rela 
+                        merantau dari jakarta ke malang demi masa depan kamuu, masa kamu mau down dan nyerah gara gara
+                        omongan orang-orang?, sedih boleh kok bang, tapi jangan terlalu larut yaa!! harus semangatt
+                        dan se ceria biasanya.
+                    </p>
+                    <p>
+                        Hehe maaf ya kalau kesannya sokab bgt, tapi satu hal yang harus kamu tau bang
+                        Kamu nggak sendirian — ada yang selalu doain dan nemenin kamu dimanapun, jadi jangan ngerasa 
+                        sendirian ya bang 🔥
+                    </p>
+                    <p>
+                        SEMANGATT BANG EGAAAAA, Ditunggu ceria nya lagii di SG dan Tiktok!!!
+                    </p>
+                </div>
+                <div class="letter-sign-wrap">
+                    <div class="letter-sign-label">Dikirim dari</div>
+                    <div class="letter-sign">Egar Dhikaa</div>
+                </div>
+            </div>
+        </div>
+        <div class="back-row">
+            <button class="back-btn" onclick="backToEnvelope()">← Kembali</button>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop preload="auto">
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const music = document.getElementById('bg-music');
+
+        const d = new Date();
+        document.getElementById('letter-date').textContent =
+            d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+        function show(id) {
+            ['start-screen','envelope-screen','letter-screen'].forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+            });
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function goToEnvelope() {
+            show('envelope-screen');
+        }
+
+        function openEnvelope() {
+            const env = document.getElementById('env-box');
+            if (env.classList.contains('opening')) return;
+
+            document.getElementById('env-hint').style.opacity = '0';
+            env.classList.add('opening');
+
+            music.play().catch(() => { music.muted = false; music.play(); });
+
+            setTimeout(() => {
+                show('letter-screen');
+                window.scrollTo(0, 0);
+            }, 1050);
+        }
+
+        function backToEnvelope() {
+            const env = document.getElementById('env-box');
+            env.classList.remove('opening');
+            env.style.opacity = '';
+            document.getElementById('env-hint').style.opacity = '';
+            show('envelope-screen');
+        }
+    </script>
+</body>
+</html>
